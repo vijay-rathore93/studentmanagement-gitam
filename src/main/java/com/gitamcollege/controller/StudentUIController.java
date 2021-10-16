@@ -21,4 +21,10 @@ public class StudentUIController {
 		return "signup";
 	}
 
+	
+	@GetMapping("/reset")
+	public String getReset() {
+		return "resetPassword";
+	}
+	
 }

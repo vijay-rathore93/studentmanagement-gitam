@@ -25,6 +25,10 @@ public class User {
 
 	private String role;
 
+	private String token;
+
+	private Boolean isActive;
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -95,6 +99,22 @@ public class User {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

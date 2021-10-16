@@ -4,13 +4,18 @@
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Gitam-College</title>
-<link
-	href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
-	rel='stylesheet'>
-<link href='https://use.fontawesome.com/releases/v5.8.1/css/all.css'
-	rel='stylesheet'>
-<script type='text/javascript'
-	src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+	src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 <!-- CSS -->
 <link rel="stylesheet"
@@ -41,7 +46,29 @@
 	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css" />
 
 <script type="text/javascript">
+
+
+
+function chkNumeric(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if (charCode == 46) { return true; }
+        else { return false; }
+    }
+    return true;
+}
+
+
 	function saveStudent() {
+
+		if ($("#emailId").val() == '' || $("#firstNameId").val() == ''
+				|| $("#passwordId").val() == '' || $("#usernameId").val() == ''
+				|| $("#genderId").val() == '' || $("#roleId").val() == ''
+				|| $("#contactId").val() == '' || !$("#emailId").val().includes("@")) {
+			return;
+		}
+
 		var inputPayload = {
 			"username" : $("#usernameId").val(),
 			"password" : $("#passwordId").val(),
@@ -54,22 +81,36 @@
 			"role" : $("#roleId").val()
 		}
 		var inputPayloadString = JSON.stringify(inputPayload);
-		jQuery.ajax({
-			type : 'POST',
-			cache : true,
-			async : false,
-			contentType : 'application/json',
-			dataType : 'json',
-			url : "http://localhost:9010/student",
-			data : inputPayloadString,
-			success : function(data) {
-				/* clearAllFormData(); */
-				alertify.alert('Confirmation', 'Suceesfully Created!!',
-						function() {
-						});
-			}
-		});
+		jQuery
+				.ajax({
+					type : 'POST',
+					cache : true,
+					async : false,
+					contentType : 'application/json',
+					dataType : 'json',
+					url : "http://localhost:9010/student",
+					data : inputPayloadString,
+					success : function(data) {
+						clearAllFormData(); 
+						alertify.success('Activation link sent on Your mail Id, Please click and activate!!');
+					},
+					error : function(data) {
+						alertify
+								.error('Email Exists,PLease change your email!');
+					}
+				});
 
+	}
+	
+	function clearAllFormData(){
+		 $("#usernameId").val("");
+		 $("#passwordId").val("");
+		 $("#firstNameId").val("");
+		 $("#lastNameId").val("");
+		 $("#contactId").val("");
+		 $("#genderId").val("");
+		 $("#emailId").val("");
+		 $("#roleId").val("");
 	}
 </script>
 <style>
@@ -112,6 +153,21 @@ body {
 	transition: 0.25s
 }
 
+.box input[type="email"], .box input[type="password"] {
+	border: 0;
+	background: none;
+	display: block;
+	margin: 20px auto;
+	text-align: center;
+	border: 2px solid #3498db;
+	padding: 10px 10px;
+	width: 250px;
+	outline: none;
+	color: white;
+	border-radius: 24px;
+	transition: 0.25s
+}
+
 .box h1 {
 	color: white;
 	text-transform: uppercase;
@@ -119,6 +175,11 @@ body {
 }
 
 .box input[type="text"]:focus, .box input[type="password"]:focus {
+	width: 300px;
+	border-color: #2ecc71
+}
+
+.box input[type="email"]:focus, .box input[type="password"]:focus {
 	width: 300px;
 	border-color: #2ecc71
 }
@@ -207,7 +268,6 @@ a.socialIcon:hover, .socialHoverClass {
 	transition: all 0.8s
 }
 
-
 #signUpbtn {
 	border: 0;
 	background: none;
@@ -226,7 +286,6 @@ a.socialIcon:hover, .socialHoverClass {
 #signUpbtn:hover {
 	background: #2ecc71
 }
-
 </style>
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
@@ -237,30 +296,29 @@ a.socialIcon:hover, .socialHoverClass {
 					<form onsubmit="event.preventDefault()" class="box">
 						<h3 style="color: white">Please Enter details!!</h3>
 						<input type="text" name="" placeholder="firstName"
-							id="firstNameId"> <input type="text" name=""
-							placeholder="lastName" id="lastNameId"> <input
-							type="text" name="" placeholder="Username" id="usernameId">
-						<input type="text" name="" placeholder="Username" id="emailId">
-						<input type="password" name="" placeholder="Password"
-							id="passwordId"> <input type="text" name=""
-							placeholder="contact" id="contactId"> <select
+							id="firstNameId" required="required"> <input type="text"
+							name="" placeholder="lastName" id="lastNameId"> <input
+							type="text" name="" placeholder="Username" id="usernameId"
+							required="required"> <input type="email" name=""
+							placeholder="Email" id="emailId" required="required"> <input
+							type="password" name="" placeholder="Password" id="passwordId"
+							required="required"> <input type="text" name=""
+							placeholder="contact" id="contactId" required="required"
+							onkeypress="return chkNumeric(event)" maxlength="10"> <select
 							class="form-control"
-							style="width: 56%; margin-left: 98px; float:" id="genderId">
+							style="width: 56%; margin-left: 98px; float:" id="genderId"
+							required="required">
 							<option value="">Select Gender</option>
 							<option value="Male">Male</option>
 							<option value="Female">Female</option>
 						</select> <select class="form-control"
 							style="width: 56%; margin-left: 98px; margin-top: 25px;"
-							id="roleId">
+							id="roleId" required="required">
 							<option value="">Select Role</option>
 							<option value="Admin">Admin</option>
 							<option value="Student">Student</option>
-						</select> 
-						
-						
-						<br/>
-						
-						<input type="button" name="" value="Signup" id="signUpbtn" onclick="saveStudent()">
+						</select> <br /> <input type="submit" name="" value="Signup"
+							id="signUpbtn" onclick="saveStudent()">
 
 					</form>
 				</div>
