@@ -26,4 +26,21 @@ public class EmailService {
 		System.out.println(registrationEmail.getText());
 		mailSender.send(registrationEmail);
 	}
+	
+	
+	
+	public void forgetPassword(HttpServletRequest request, User userProfileEntity) {
+		String appUrl = request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort();
+		SimpleMailMessage registrationEmail = new SimpleMailMessage();
+		registrationEmail.setTo(userProfileEntity.getEmail());
+		registrationEmail.setSubject("Reset Link");
+		registrationEmail.setText("To Reset your password, please click the link below:\n" + appUrl
+				+ "/resetPassword?token=" + userProfileEntity.getToken());
+		 registrationEmail.setFrom("studentlearm@gmail.com");
+		System.out.println(registrationEmail.getText());
+		mailSender.send(registrationEmail);
+	}
+	
+	
+	
 }
