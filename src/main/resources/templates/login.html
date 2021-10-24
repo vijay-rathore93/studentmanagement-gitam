@@ -4,13 +4,44 @@
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Gitam-College</title>
-<link
-	href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
-	rel='stylesheet'>
-<link href='https://use.fontawesome.com/releases/v5.8.1/css/all.css'
-	rel='stylesheet'>
-<script type='text/javascript'
-	src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+	src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+<!-- Semantic UI theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+<!-- Bootstrap theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+
+<!-- 
+    RTL version
+-->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css" />
+<!-- Semantic UI theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css" />
+<!-- Bootstrap theme -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css" />
 <style>
 body {
 	margin: 0;
@@ -146,6 +177,47 @@ a.socialIcon:hover, .socialHoverClass {
 	transition: all 0.8s
 }
 </style>
+
+<script type="text/javascript">
+	function login() {
+
+		if ($("#passwordId").val() == '' || $("#usernameId").val() == '') {
+			return;
+		}
+
+		var inputPayload = {
+			"username" : $("#usernameId").val(),
+			"password" : $("#passwordId").val()
+		}
+		var inputPayloadString = JSON.stringify(inputPayload);
+		jQuery.ajax({
+			type : 'POST',
+			cache : true,
+			async : false,
+			contentType : 'application/json',
+			dataType : 'json',
+			url : "http://localhost:9010/login",
+			data : inputPayloadString,
+			success : function(data) {
+				debugger;
+				if(data.role=='Admin' && data.isActive){
+					location.replace("http://localhost:9010/"+data.token+"/all")
+				}
+				else if(data.role=='Student' && data.isActive){
+					location.replace("http://localhost:9010/"+data.token+"/students")
+				}
+				else if(!data.isActive){
+					alertify.error('Please activate user before Login!!');
+					}
+				
+			},
+			error : function(data) {
+				alertify.error('Invalid Username or Password');
+			}
+		});
+
+	}
+</script>
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
 	<div class="container">
@@ -155,12 +227,13 @@ a.socialIcon:hover, .socialHoverClass {
 					<form onsubmit="event.preventDefault()" class="box">
 						<h1>Login</h1>
 						<p class="text-muted">Please enter your login and password!</p>
-						<input type="text" name="" placeholder="Username"> <input
-							type="password" name="" placeholder="Password"> <a
-							class="forgot text-muted" href="/forget">Forgot password?</a><br/> <a
+						<input type="text" name="" id="usernameId" placeholder="Username">
+						<input type="password" name="" id="passwordId"
+							placeholder="Password"> <a class="forgot text-muted"
+							href="/forget">Forgot password?</a><br /> <a
 							class="forgot text-muted" href="/signUp">Do you want to
 							create Account?</a> <input type="submit" name="" value="Login"
-							href="#">
+							id="signUpbtn" onclick="login()">
 
 					</form>
 				</div>
