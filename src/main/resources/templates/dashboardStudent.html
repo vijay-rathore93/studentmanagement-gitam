@@ -29,10 +29,10 @@
 			async : false,
 			contentType : 'application/json',
 			dataType : 'json',
-			url : "http://localhost:9009/logout",
+			url : location.origin + "/logout",
 			data : location.href.split("/")[3],
 			success : function(data) {
-				window.location.assign("http://localhost:9009/");
+				window.location.assign(location.origin);
 			},
 			error : function(data) {
 			}
@@ -51,89 +51,46 @@
 						$('#employeeTBLId')
 								.html(
 										'<table class="table  table-bordered "  id="allPat" style="color:white!important"></table>');
-						dataTable = $('#allPat')
-								.dataTable(
-										{
-											"data" : data,
-											"bLengthChange" : false,
-											"bFilter" : true,
-											"bInfo" : false,
-											"scrollCollapse" : true,
-											"paging" : false,
-											'iDisplayLength' : 6,
-											"dom" : 'lrtip',
-											"aoColumns" : [ {
-												"mDataProp" : "firstName",
-												"title" : "Name",
-												"width" : "15%"
-											}, {
-												"mDataProp" : "username",
-												"title" : "UserName",
-												"width" : "15%"
-											}, {
-												"mDataProp" : "contact",
-												"title" : "Contact",
-												"width" : "15%"
-											}, {
-												"mDataProp" : "email",
-												"title" : "Email",
-												"width" : "15%"
-											}, {
-												"mDataProp" : "gender",
-												"title" : "Gender",
-												"width" : "15%"
-											},
+						dataTable = $('#allPat').dataTable({
+							"data" : data,
+							"bLengthChange" : false,
+							"bFilter" : true,
+							"bInfo" : false,
+							"scrollCollapse" : true,
+							"paging" : false,
+							'iDisplayLength' : 6,
+							"dom" : 'lrtip',
+							"aoColumns" : [ {
+								"mDataProp" : "firstName",
+								"title" : "Name",
+								"width" : "15%"
+							}, {
+								"mDataProp" : "username",
+								"title" : "UserName",
+								"width" : "15%"
+							}, {
+								"mDataProp" : "contact",
+								"title" : "Contact",
+								"width" : "15%"
+							}, {
+								"mDataProp" : "email",
+								"title" : "Email",
+								"width" : "15%"
+							}, {
+								"mDataProp" : "gender",
+								"title" : "Gender",
+								"width" : "15%"
+							},
 
-											{
-												"mDataProp" : "isActive",
-												"title" : "isActive",
-												"width" : "15%"
-											},
+							{
+								"mDataProp" : "isActive",
+								"title" : "isActive",
+								"width" : "15%"
+							}
 
-											{
-												"mDataProp" : "",
-												"title" : "",
-												"width" : "2%"
-											},
+							]
 
-											{
-												"mDataProp" : "",
-												"title" : "",
-												"sWidth" : "2px"
-											} ],
-											"columnDefs" : [
-													{
-														"sClass" : "editTblAction",
-														"sWidth" : "20px",
-														"targets" : -1,
-														"data" : null,
-														"title" : "",
-														"bSortable" : false,
-														/* "defaultContent" : "<button type='button' class='btn btn-primary' onclick='editEmployee(1)'><i>edit</i></button>" */
-														render : function(data,
-																type, row) {
-															return '<a class="btn btn-primary" href="#" onclick="addOrEditData('
-																	+ row.empId
-																	+ ')">Info</a>';
-														}
-
-													},
-													{
-														"targets" : -2,
-														"sClass" : "",
-														"data" : null,
-														"title" : "",
-														"bSortable" : false,
-														"sWidth" : "20px",
-														//"defaultContent": "<a class='reSendOtp' title='Delete Record' href=\"\" onclick=\deleteData();return false;\"><span class='glyphicon glyphicon-trash'></span></a>"
-														render : function(data,
-																type, row) {
-															return '<a class="btn btn-warning" href="#" onclick="deleteData('
-																	+ row.empId
-																	+ ')">edit</a>';
-														}
-													} ]
-										});
+						});
 
 					}
 				//)
